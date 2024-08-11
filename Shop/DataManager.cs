@@ -15,16 +15,16 @@ namespace Shop
         {
             try
             {
-                await AddData(XmlPath,"InsertUsers");
-                await AddData(XmlPath,"InsertProducts");
-                await AddData(XmlPath,"InsertOrders");
-                await AddData(XmlPath,"InsertOrdersProducts");
+                await ExecuteInsert(XmlPath,"InsertUsers");
+                await ExecuteInsert(XmlPath,"InsertProducts");
+                await ExecuteInsert(XmlPath,"InsertOrders");
+                await ExecuteInsert(XmlPath,"InsertOrdersProducts");
                 Console.WriteLine();
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); }
         }
 
-        public async Task AddData(string XmlPath,string procedureName)
+        public async Task ExecuteInsert(string XmlPath,string procedureName)
         {
             string sqlExpression = procedureName;
             string tableName = procedureName.Substring(6);

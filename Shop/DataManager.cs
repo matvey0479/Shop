@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
 
-namespace Test
+namespace Shop
 {
     public class DataManager
     {
@@ -15,17 +15,19 @@ namespace Test
         {
             try
             {
-                await AddUsers(XmlPath);
-                await AddProducts(XmlPath);
-                await AddOrders(XmlPath);
-                await AddOrdersProducts(XmlPath);
+                await AddData(XmlPath,"InsertUsers");
+                await AddData(XmlPath,"InsertProducts");
+                await AddData(XmlPath,"InsertOrders");
+                await AddData(XmlPath,"InsertOrdersProducts");
                 Console.WriteLine();
             }
             catch (Exception ex) { Console.WriteLine(ex.Message); }
         }
-        public async Task AddUsers(string XmlPath)
+
+        public async Task AddData(string XmlPath,string procedureName)
         {
-            string sqlExpression = "InsertUsers";
+            string sqlExpression = procedureName;
+            string tableName = procedureName.Substring(6);
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -40,69 +42,7 @@ namespace Test
                 };
                 command.Parameters.Add(nameParam);
                 int number = await command.ExecuteNonQueryAsync();
-                Console.WriteLine("В таблицу Users добавлено объектов: {0}", number);
-
-            }
-        }
-        public async Task AddProducts(string XmlPath)
-        {
-            string sqlExpression = "InsertProducts";
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                await connection.OpenAsync();
-
-                SqlCommand command = new SqlCommand(sqlExpression, connection);
-                command.CommandType = CommandType.StoredProcedure;
-                SqlParameter nameParam = new SqlParameter
-                {
-                    ParameterName = "@XmlPath",
-                    Value = XmlPath
-                };
-                command.Parameters.Add(nameParam);
-
-                int number = await command.ExecuteNonQueryAsync();
-                Console.WriteLine("В таблицу Products добавлено объектов: {0}", number);
-
-            }
-        }
-        public async Task AddOrders(string XmlPath)
-        {
-            string sqlExpression = "InsertOrders";
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                await connection.OpenAsync();
-                SqlCommand command = new SqlCommand(sqlExpression, connection);
-                command.CommandType = CommandType.StoredProcedure;
-                SqlParameter nameParam = new SqlParameter
-                {
-                    ParameterName = "@XmlPath",
-                    Value = XmlPath
-                };
-                command.Parameters.Add(nameParam);
-                int number = await command.ExecuteNonQueryAsync();
-                Console.WriteLine("В таблицу Orders добавлено объектов: {0}", number);
-
-            }
-        }
-        public async Task AddOrdersProducts(string XmlPath)
-        {
-            string sqlExpression = "InsertOrdersProducts";
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                await connection.OpenAsync();
-                SqlCommand command = new SqlCommand(sqlExpression, connection);
-                command.CommandType = CommandType.StoredProcedure;
-                SqlParameter nameParam = new SqlParameter
-                {
-                    ParameterName = "@XmlPath",
-                    Value = XmlPath
-                };
-                command.Parameters.Add(nameParam);
-                int number = await command.ExecuteNonQueryAsync();
-                Console.WriteLine("В таблицу OrdersProducts добавлено объектов: {0}", number);
+                Console.WriteLine("В таблицу "+ tableName +" добавлено объектов: {0}", number);
 
             }
         }

@@ -1,4 +1,4 @@
-﻿using Test;
+﻿using Shop;
 
 string connectionString = "Server=HOME-PC;Database=Shop;Trusted_Connection=True;";
 DataManager dataManager = new DataManager(connectionString);

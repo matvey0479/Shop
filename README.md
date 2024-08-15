@@ -1,1 +1,3 @@
-https://github.com/user-attachments/assets/19b0d180-550f-4b63-9449-941194440c21
+create database : dotnet ef database update
+
+https://github.com/user-attachments/assets/a5d3498d-8fa0-4510-9dbf-0e3264d45f33

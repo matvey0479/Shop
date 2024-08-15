@@ -1,7 +1,26 @@
 ﻿using Shop;
+using Shop.Domain;
+using Shop.Domain.Repositories.Abstract;
+using Shop.Domain.Repositories.EntityFramework;
+using Microsoft.Extensions.DependencyInjection;
+using DataManager = Shop.Domain.DataManager;
 
-string connectionString = "Server=HOME-PC;Database=Shop;Trusted_Connection=True;";
-DataManager dataManager = new DataManager(connectionString);
+var serviceProvider = new ServiceCollection()
+            .AddTransient<IUsersRepository, EFUsersRepository>()
+            .AddTransient<IProductsRepository, EFProductsRepository>()
+            .AddTransient<IOrdersRepository, EFOrdersRepository>()
+            .AddTransient<IOrdersProductsRepository, EFOrdersProductsRepository>()
+            .AddTransient<ISalesRepository, EFSalesRepository>()
+            .AddTransient<DataManager>()
+            .AddTransient<ShopContext>()
+            .BuildServiceProvider();
+            
+
+
+
+DataManager dataManager = serviceProvider.GetService<DataManager>();
+DbAction action = new DbAction(dataManager);
+
 Console.Write("Выберите действие:\n" +
                 "1) Загрузить данные из XML\n" +
                 "2) Отобразить список продаж\n" +
@@ -14,11 +33,18 @@ while (state)
     {
         case "1":
             Console.WriteLine("Введите путь до файла:");
-            string xmlPath = Console.ReadLine().ToString();
-            await dataManager.LoadData(xmlPath);
+            string path = Console.ReadLine();
+            if (Path.Exists(path))
+            {
+                XmlLoad xmlLoad = new XmlLoad(path);
+                var orders = xmlLoad.Load();
+                action.ExecuteInsert(orders);
+                action.ShowResultInsert();
+            }
+            else { Console.WriteLine("Файла не существует!"); }
             break;
         case "2":
-            await dataManager.GetSales();
+            action.ShowSales();
             break;
         case "3":
             state = false;
@@ -28,7 +54,6 @@ while (state)
             Console.WriteLine("Некорректный ввод!");
             break;
     }
-
 }
 Console.ReadLine();
 

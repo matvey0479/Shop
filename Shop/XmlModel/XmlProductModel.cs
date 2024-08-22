@@ -8,8 +8,8 @@ namespace Shop.XmlModel
 {
     public class XmlProductModel
     {
-        public string quantity {  get; set; }
-        public string productName { get; set; } 
-        public string price { get; set; }
+        public string Quantity {  get; set; }
+        public string ProductName { get; set; } 
+        public string Price { get; set; }
     }
 }

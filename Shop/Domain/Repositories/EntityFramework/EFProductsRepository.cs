@@ -5,31 +5,31 @@ namespace Shop.Domain.Repositories.EntityFramework
 {
     public class EFProductsRepository : IProductsRepository
     {
-        public ShopContext context;
-        public int countAddedRows = 0;
+        public ShopContext Context;
+        public int CountAddedRows = 0;
 
         public EFProductsRepository(ShopContext context) 
         {
-            this.context = context;
+            Context = context;
         }
         public void AddProduct(Product product)
         {
-            if(!context.Products.Any(x => x.productName == product.productName && x.price == product.price))
+            if(!Context.Products.Any(x => x.ProductName == product.ProductName && x.Price == product.Price))
             {
-                context.Products.Add(product);
-                context.SaveChanges();
-                countAddedRows ++;
+                Context.Products.Add(product);
+                Context.SaveChanges();
+                CountAddedRows ++;
             }
 
         }
         public Product GetProductByNameAndPrice(string nameProduct,double price)
         {
-            return context.Products.FirstOrDefault(x=> x.productName ==  nameProduct && x.price == price);
+            return Context.Products.FirstOrDefault(x=> x.ProductName ==  nameProduct && x.Price == price);
         }
         public string GetAddedRows()
         {
-            string result =  "В таблицу Products добавлено объектов: " +countAddedRows;
-            countAddedRows = 0;
+            string result =  "В таблицу Products добавлено объектов: " +CountAddedRows;
+            CountAddedRows = 0;
             return result;
         }
     }

@@ -12,8 +12,8 @@ namespace Shop.Domain
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Product> Products { get; set; }
-        public DbSet<Order> Order { get; set; }
-        public DbSet<OrderProduct> orderProducts { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderProduct> OrderProducts { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("Server=HOME-PC;Database=Shop;Integrated Security=true;TrustServerCertificate=True");

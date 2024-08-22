@@ -17,18 +17,18 @@ namespace Shop.Domain.Entites
         {
             OrderId = orderId;
             ProductId = productId;
-            this.productCount = productCount;
+            ProductCount = productCount;
         }
 
         
 
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.None), Key]
         public int OrderId { get; set; }
-        public Order order { get; set; }
+        public Order Order { get; set; }
 
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.None), Key]
         public int ProductId { get; set; }
-        public Product product { get; set; }
-        public double productCount { get; set; }
+        public Product Product { get; set; }
+        public double ProductCount { get; set; }
     }
 }

@@ -10,15 +10,15 @@ namespace Shop.Domain.Entites
     {
         public Product(string? articleNumber,string productName,double price) 
         {
-            this.articleNumber = articleNumber;
-            this.productName = productName;
-            this.price = price;
-            ordersProducts = new  List<OrderProduct>();
+            ArticleNumber = articleNumber;
+            ProductName = productName;
+            Price = price;
+            OrdersProducts = new  List<OrderProduct>();
         }
         public Product() { }
-        public string? articleNumber { get; set; }=null;
-        public string productName { get; set; }
-        public double price { get; set; }
-        public virtual ICollection<OrderProduct> ordersProducts { get; set; }
+        public string? ArticleNumber { get; set; }=null;
+        public string ProductName { get; set; }
+        public double Price { get; set; }
+        public virtual ICollection<OrderProduct> OrdersProducts { get; set; }
     }
 }

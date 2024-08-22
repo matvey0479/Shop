@@ -5,32 +5,32 @@ namespace Shop.Domain.Repositories.EntityFramework
 {
     public class EFOrdersRepository : IOrdersRepository
     {
-        public ShopContext context;
-        public int countAddedRows = 0;
+        public ShopContext Context;
+        public int CountAddedRows = 0;
         public EFOrdersRepository(ShopContext context) 
         {
-            this.context = context;
+            Context = context;
         }
 
         public void AddOrder(Order order)
         {
-            if(!context.Order.Any(x=> x.OrderDate == order.OrderDate && x.UserId == order.UserId))
+            if(!Context.Orders.Any(x=> x.OrderDate == order.OrderDate && x.UserId == order.UserId))
             {
-                context.Order.Add(order);
-                context.SaveChanges();
-                countAddedRows++;
+                Context.Orders.Add(order);
+                Context.SaveChanges();
+                CountAddedRows++;
             }
 
         }
 
         public Order GetOrderByNumber(string numberOrder)
         {
-            return context.Order.FirstOrDefault(x => x.numberOrder == numberOrder);
+            return Context.Orders.FirstOrDefault(x => x.NumberOrder == numberOrder);
         }
         public string GetAddedRows()
         {
-            string result = "В таблицу Orders добавлено объектов: " + countAddedRows;
-            countAddedRows = 0;
+            string result = "В таблицу Orders добавлено объектов: " + CountAddedRows;
+            CountAddedRows = 0;
             return result;
         }
     }

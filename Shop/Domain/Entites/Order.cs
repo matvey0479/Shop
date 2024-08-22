@@ -11,16 +11,16 @@ namespace Shop.Domain.Entites
         public Order() { }
         public Order(string numberOrder,DateTime orderDate, int userId)
         {
-            this.numberOrder = numberOrder;
+            NumberOrder = numberOrder;
             OrderDate = orderDate;
             UserId = userId;
-            ordersProducts = new List<OrderProduct>();
+            OrdersProducts = new List<OrderProduct>();
         }
-        public string numberOrder {  get; set; }
+        public string NumberOrder {  get; set; }
         public DateTime OrderDate { get; set; }
         public User User { get; set; }
         public int UserId { get; set; }
-        public virtual ICollection<OrderProduct> ordersProducts { get; set; }
+        public virtual ICollection<OrderProduct> OrdersProducts { get; set; }
 
     }
 }

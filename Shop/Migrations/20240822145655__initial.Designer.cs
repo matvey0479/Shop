@@ -12,7 +12,7 @@ using Shop.Domain;
 namespace Shop.Migrations
 {
     [DbContext(typeof(ShopContext))]
-    [Migration("20240815081944__initial")]
+    [Migration("20240822145655__initial")]
     partial class _initial
     {
         /// <inheritdoc />
@@ -33,22 +33,22 @@ namespace Shop.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("NumberOrder")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<string>("numberOrder")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Order");
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("Shop.Domain.Entites.OrderProduct", b =>
@@ -59,14 +59,14 @@ namespace Shop.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<double>("productCount")
+                    b.Property<double>("ProductCount")
                         .HasColumnType("float");
 
                     b.HasKey("OrderId", "ProductId");
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("orderProducts");
+                    b.ToTable("OrderProducts");
                 });
 
             modelBuilder.Entity("Shop.Domain.Entites.Product", b =>
@@ -77,13 +77,13 @@ namespace Shop.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("articleNumber")
+                    b.Property<string>("ArticleNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("price")
+                    b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<string>("productName")
+                    b.Property<string>("ProductName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -100,21 +100,21 @@ namespace Shop.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Fio")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Login")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("fio")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("phoneNumber")
+                    b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -125,7 +125,7 @@ namespace Shop.Migrations
             modelBuilder.Entity("Shop.Domain.Entites.Order", b =>
                 {
                     b.HasOne("Shop.Domain.Entites.User", "User")
-                        .WithOne("order")
+                        .WithOne("Order")
                         .HasForeignKey("Shop.Domain.Entites.Order", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -135,36 +135,36 @@ namespace Shop.Migrations
 
             modelBuilder.Entity("Shop.Domain.Entites.OrderProduct", b =>
                 {
-                    b.HasOne("Shop.Domain.Entites.Order", "order")
-                        .WithMany("ordersProducts")
+                    b.HasOne("Shop.Domain.Entites.Order", "Order")
+                        .WithMany("OrdersProducts")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Shop.Domain.Entites.Product", "product")
-                        .WithMany("ordersProducts")
+                    b.HasOne("Shop.Domain.Entites.Product", "Product")
+                        .WithMany("OrdersProducts")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("order");
+                    b.Navigation("Order");
 
-                    b.Navigation("product");
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Shop.Domain.Entites.Order", b =>
                 {
-                    b.Navigation("ordersProducts");
+                    b.Navigation("OrdersProducts");
                 });
 
             modelBuilder.Entity("Shop.Domain.Entites.Product", b =>
                 {
-                    b.Navigation("ordersProducts");
+                    b.Navigation("OrdersProducts");
                 });
 
             modelBuilder.Entity("Shop.Domain.Entites.User", b =>
                 {
-                    b.Navigation("order");
+                    b.Navigation("Order");
                 });
 #pragma warning restore 612, 618
         }

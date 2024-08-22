@@ -1,9 +1,10 @@
-﻿using Shop;
-using Shop.Domain;
+﻿using Shop.Domain;
 using Shop.Domain.Repositories.Abstract;
 using Shop.Domain.Repositories.EntityFramework;
 using Microsoft.Extensions.DependencyInjection;
 using DataManager = Shop.Domain.DataManager;
+using Shop.DbActions;
+using Shop.LoadingFile;
 
 var serviceProvider = new ServiceCollection()
             .AddTransient<IUsersRepository, EFUsersRepository>()
@@ -13,13 +14,15 @@ var serviceProvider = new ServiceCollection()
             .AddTransient<ISalesRepository, EFSalesRepository>()
             .AddTransient<DataManager>()
             .AddTransient<ShopContext>()
+            .AddTransient<ILoadFile,XmlLoadFile>()
+            .AddTransient<IDbAction,DbAction>()
             .BuildServiceProvider();
-            
 
 
 
-DataManager dataManager = serviceProvider.GetService<DataManager>();
-DbAction action = new DbAction(dataManager);
+
+
+IDbAction action = serviceProvider.GetService<IDbAction>();
 
 Console.Write("Выберите действие:\n" +
                 "1) Загрузить данные из XML\n" +
@@ -36,8 +39,8 @@ while (state)
             string path = Console.ReadLine();
             if (Path.Exists(path))
             {
-                XmlLoad xmlLoad = new XmlLoad(path);
-                var orders = xmlLoad.Load();
+                ILoadFile xmlLoad = serviceProvider.GetService<ILoadFile>();
+                var orders = xmlLoad.Load(path);
                 action.ExecuteInsert(orders);
                 action.ShowResultInsert();
             }

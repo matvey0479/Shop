@@ -4,19 +4,19 @@ namespace Shop.Domain
 {
     public class DataManager
     {
-        public DataManager(IUsersRepository users,IProductsRepository products,IOrdersRepository orders,
-                           IOrdersProductsRepository ordersProducts, ISalesRepository sales) 
+        public DataManager(IUsersRepository user,IProductsRepository product,IOrdersRepository order,
+                           IOrdersProductsRepository ordersProduct, ISalesRepository sale) 
         { 
-            this.users = users;
-            this.products = products;
-            this.orders = orders;
-            this.ordersProducts = ordersProducts;
-            this.sales = sales;
+            User = user;
+            Product = product;
+            Order = order;
+            OrdersProduct = ordersProduct;
+            Sale = sale;
         }
-        public IUsersRepository users {  get; set; }
-        public IProductsRepository products { get; set; }
-        public IOrdersRepository orders { get; set; }
-        public IOrdersProductsRepository ordersProducts { get; set; }
-        public ISalesRepository sales { get; set; }
+        public IUsersRepository User {  get; set; }
+        public IProductsRepository Product { get; set; }
+        public IOrdersRepository Order { get; set; }
+        public IOrdersProductsRepository OrdersProduct { get; set; }
+        public ISalesRepository Sale { get; set; }
     }
 }

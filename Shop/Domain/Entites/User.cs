@@ -13,15 +13,15 @@ namespace Shop.Domain.Entites
         {
             Login = login;
             Password = password;
-            this.fio = fio;
-            this.email = email;
-            this.phoneNumber = phoneNumber;
+            Fio = fio;
+            Email = email;
+            PhoneNumber = phoneNumber;
         }
         public string? Login { get; set; }
         public string? Password { get; set; }
-        public string fio {  get; set; }
-        public string email { get; set; }
-        public string? phoneNumber { get; set; }
-        public Order? order { get; set; }
+        public string Fio {  get; set; }
+        public string Email { get; set; }
+        public string? PhoneNumber { get; set; }
+        public Order? Order { get; set; }
     }
 }

@@ -9,7 +9,7 @@ namespace Shop.XmlModel
     public class XmlUserModel
     {
         public XmlUserModel() { }
-        public string fio {  get; set; }
-        public string email { get; set; }
+        public string Fio {  get; set; }
+        public string Email { get; set; }
     }
 }

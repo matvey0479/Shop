@@ -5,32 +5,32 @@ namespace Shop.Domain.Repositories.EntityFramework
 {
     public class EFUsersRepository : IUsersRepository
     {
-        public ShopContext context;
-        public int countAddedRows = 0;
+        public ShopContext Context;
+        public int CountAddedRows = 0;
         public EFUsersRepository(ShopContext context) 
         {
-            this.context = context;
+            Context = context;
         }
         public void AddUser(User user)
         {
-            if(!context.Users.Any(x => x.email == user.email))
+            if(!Context.Users.Any(x => x.Email == user.Email))
             {
-                context.Users.Add(user);
-                context.SaveChanges();
-                countAddedRows++;
+                Context.Users.Add(user);
+                Context.SaveChanges();
+                CountAddedRows++;
             }
             
         }
 
         public User GetUserByEmail(string email)
         {
-            return context.Users.FirstOrDefault(x=>x.email==email);
+            return Context.Users.FirstOrDefault(x=>x.Email==email);
         }
 
         public string GetAddedRows()
         {
-            string result = "В таблицу Users добавлено объектов: " + countAddedRows;
-            countAddedRows = 0;
+            string result = "В таблицу Users добавлено объектов: " + CountAddedRows;
+            CountAddedRows = 0;
             return result;
         }
     }

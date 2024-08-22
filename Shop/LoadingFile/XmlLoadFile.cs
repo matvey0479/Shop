@@ -1,37 +1,36 @@
 ﻿using Shop.XmlModel;
 using System.Xml.Linq;
 
-namespace Shop
+namespace Shop.LoadingFile
 {
-    public class XmlLoad
+    public class XmlLoadFile : ILoadFile
     {
-        public string path;
-        public XmlLoad(string path)
+        public XmlLoadFile()
         {
-            this.path = path;
+
         }
-        public List<XmlDataModel> Load()
+        public List<XmlDataModel> Load(string path)
         {
             XDocument xdoc = XDocument.Load(path);
             XmlDataModel model = new XmlDataModel();
             var queri = xdoc.Element("orders")?
            .Elements("order")
-           .Select(x=>new XmlDataModel 
+           .Select(x => new XmlDataModel
            {
-               numberOrder = x.Element("no")?.Value,
+               NumberOrder = x.Element("no")?.Value,
                OrderDate = x.Element("reg_date")?.Value,
                Products = x.Descendants("product")
                                 .Select(prod => new XmlProductModel
                                 {
-                                    quantity = prod.Element("quantity")?.Value,
-                                    productName = prod.Element("name")?.Value,
-                                    price = prod.Element("price")?.Value.Replace(".",","),
+                                    Quantity = prod.Element("quantity")?.Value,
+                                    ProductName = prod.Element("name")?.Value,
+                                    Price = prod.Element("price")?.Value.Replace(".", ","),
                                 }),
                Users = x.Descendants("user")
                             .Select(user => new XmlUserModel
                             {
-                                fio = user.Element("fio")?.Value,
-                                email = user.Element("email")?.Value,
+                                Fio = user.Element("fio")?.Value,
+                                Email = user.Element("email")?.Value,
                             })
 
            });

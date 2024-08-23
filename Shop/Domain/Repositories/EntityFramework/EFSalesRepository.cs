@@ -5,16 +5,16 @@ namespace Shop.Domain.Repositories.EntityFramework
 {
     public class EFSalesRepository: ISalesRepository
     {
-        public ShopContext Context;
+        private readonly ShopContext _context;
         public EFSalesRepository(ShopContext context)
         {
-            Context = context;
+            _context = context;
         }
         public List<Sale> GetSales()
         {
-            var queri = from product in Context.Products
-                        join orderProduct in Context.OrderProducts on product.Id equals orderProduct.ProductId
-                        join order in Context.Orders on orderProduct.OrderId equals order.Id
+            var queri = from product in _context.Products
+                        join orderProduct in _context.OrderProducts on product.Id equals orderProduct.ProductId
+                        join order in _context.Orders on orderProduct.OrderId equals order.Id
                         group orderProduct by product.ProductName into g
                         select new Sale()
                         {

@@ -12,30 +12,30 @@ namespace Shop.Domain.Repositories.EntityFramework
 {
     public class EFOrdersProductsRepository : IOrdersProductsRepository
     {
-        public ShopContext Context;
-        public int CountAddedRows = 0;
+        private readonly ShopContext _context;
+        private int _countAddedRows = 0;
         public EFOrdersProductsRepository(ShopContext context)
         {
-            Context = context;
+            _context = context;
         }
 
         public void AddOrderProduct(OrderProduct orderProduct)
         {
-            if (!Context.OrderProducts.Any(x => x.ProductId == orderProduct.ProductId &&
+            if (!_context.OrderProducts.Any(x => x.ProductId == orderProduct.ProductId &&
                                           x.OrderId == orderProduct.OrderId &&
                                           x.ProductCount == orderProduct.ProductCount))
             {
-                Context.OrderProducts.Add(orderProduct);
-                Context.SaveChanges();
-                CountAddedRows++;
+                _context.OrderProducts.Add(orderProduct);
+                _context.SaveChanges();
+                _countAddedRows++;
             }
 
         }
        
         public string GetAddedRows()
         {
-            string result = "В таблицу OrdersProducts добавлено объектов: " + CountAddedRows;
-            CountAddedRows = 0;
+            string result = "В таблицу OrdersProducts добавлено объектов: " + _countAddedRows;
+            _countAddedRows = 0;
             return result;
         }
 

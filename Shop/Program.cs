@@ -2,7 +2,6 @@
 using Shop.Domain.Repositories.Abstract;
 using Shop.Domain.Repositories.EntityFramework;
 using Microsoft.Extensions.DependencyInjection;
-using DataManager = Shop.Domain.DataManager;
 using Shop.DbActions;
 using Shop.LoadingFile;
 
@@ -12,15 +11,10 @@ var serviceProvider = new ServiceCollection()
             .AddTransient<IOrdersRepository, EFOrdersRepository>()
             .AddTransient<IOrdersProductsRepository, EFOrdersProductsRepository>()
             .AddTransient<ISalesRepository, EFSalesRepository>()
-            .AddTransient<DataManager>()
             .AddTransient<ShopContext>()
             .AddTransient<ILoadFile,XmlLoadFile>()
             .AddTransient<IDbAction,DbAction>()
             .BuildServiceProvider();
-
-
-
-
 
 IDbAction action = serviceProvider.GetService<IDbAction>();
 

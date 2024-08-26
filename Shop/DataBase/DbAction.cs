@@ -1,16 +1,26 @@
 ﻿using Shop.Domain.Entites;
 using Shop.XmlModel;
 using Shop.Domain;
+using Shop.Domain.Repositories.Abstract;
 
 namespace Shop.DbActions
 {
     public class DbAction:IDbAction
     {
-        private readonly DataManager _dataManager;
+        private readonly IUsersRepository _usersRepository;
+        private readonly IProductsRepository _productsRepository;
+        private readonly ISalesRepository _salesRepository;
+        private readonly IOrdersRepository _ordersRepository;
+        private readonly IOrdersProductsRepository _ordersProductsRepository;
 
-        public DbAction(DataManager dataManager)
+        public DbAction(IUsersRepository users, IProductsRepository products, ISalesRepository sales,
+                        IOrdersRepository orders, IOrdersProductsRepository ordersProducts)
         {
-            _dataManager = dataManager;
+            _usersRepository = users;
+            _productsRepository = products;
+            _salesRepository = sales;
+            _ordersRepository = orders;
+            _ordersProductsRepository = ordersProducts;
 
         }
         public void ExecuteInsert(List<XmlDataModel> orders)
@@ -24,20 +34,20 @@ namespace Shop.DbActions
                         foreach (var user in order.Users)
                         {
                             var _user = new User(null, null, user.Fio, user.Email, null);
-                            _dataManager.User.AddUser(_user);
-                            if (_user.Id == 0) { _user = _dataManager.User.GetUserByEmail(user.Email); }
+                            _usersRepository.AddUser(_user);
+                            if (_user.Id == 0) { _user = _usersRepository.GetUserByEmail(user.Email); }
                             var _order = new Order(order.NumberOrder, Convert.ToDateTime(order.OrderDate), _user.Id);
-                            _dataManager.Order.AddOrder(_order);
-                            if (_order.Id == 0) { _order = _dataManager.Order.GetOrderByNumber(order.NumberOrder); }
+                            _ordersRepository.AddOrder(_order);
+                            if (_order.Id == 0) { _order = _ordersRepository.GetOrderByNumber(order.NumberOrder); }
                             foreach (var product in order.Products)
                             {
                                 var _product = new Product(null, product.ProductName, Convert.ToDouble(product.Price));
-                                _dataManager.Product.AddProduct(_product);
+                                _productsRepository.AddProduct(_product);
                                 if (_product.Id == 0)
                                 {
-                                    _product = _dataManager.Product.GetProductByNameAndPrice(product.ProductName, Convert.ToDouble(product.Price));
+                                    _product = _productsRepository.GetProductByNameAndPrice(product.ProductName, Convert.ToDouble(product.Price));
                                 }
-                                _dataManager.OrdersProduct.AddOrderProduct(new OrderProduct(_order.Id, _product.Id, Convert.ToDouble(product.Quantity)));
+                                _ordersProductsRepository.AddOrderProduct(new OrderProduct(_order.Id, _product.Id, Convert.ToDouble(product.Quantity)));
                             }
                         }
                     }
@@ -49,15 +59,15 @@ namespace Shop.DbActions
         }
         public void ShowResultInsert()
         {
-            Console.WriteLine(_dataManager.User.GetAddedRows() + "\n" +
-                              _dataManager.Product.GetAddedRows() + "\n" +
-                              _dataManager.Order.GetAddedRows() + "\n" +
-                              _dataManager.OrdersProduct.GetAddedRows() + "\n");
+            Console.WriteLine(_usersRepository.GetAddedRows() + "\n" +
+                              _productsRepository.GetAddedRows() + "\n" +
+                              _ordersRepository.GetAddedRows() + "\n" +
+                              _ordersProductsRepository.GetAddedRows() + "\n");
         }
 
         public void ShowSales()
         {
-            var sales = _dataManager.Sale.GetSales();
+            var sales = _salesRepository.GetSales();
             Console.WriteLine("ProductName\tQuantity\tAmount");
             foreach (var sale in sales)
             {
